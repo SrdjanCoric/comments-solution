@@ -6,7 +6,11 @@ const Comments = props => {
     <div className="comments">
       <h2>Comments ({props.comments.length})</h2>
       {props.comments.map(comment => (
-        <ParentComment key={comment.id} comment={comment} />
+        <ParentComment
+          key={comment.id}
+          comment={comment}
+          onShowMoreReplies={props.onShowMoreReplies}
+        />
       ))}
     </div>
   );
