@@ -1,24 +1,10 @@
 import React from "react";
 import Comment from "./Comment";
-import store from "../lib/store";
 
 class ParentComment extends React.Component {
-  handleShowMoreReplies = async e => {
-    e.preventDefault();
-    let id = this.props.comment.id;
-    try {
-      const response = await fetch(`/api/comment_replies?comment_id=${id}`);
-      const replies = await response.json();
-      store.dispatch({ replies, comment_id: id, type: "REPLIES_RECEIVED" });
-    } catch (error) {
-      console.error(error);
-    }
-  };
   render() {
     const comment = this.props.comment;
-    const replies = store
-      .getState()
-      .replies.filter(r => r.comment_id === comment.id);
+    const replies = this.props.replies;
     return (
       <div className="parent-comment">
         <Comment comment={comment} />
@@ -30,7 +16,7 @@ class ParentComment extends React.Component {
             <a
               href="#"
               className="show_more"
-              onClick={this.handleShowMoreReplies}
+              onClick={this.props.onMoreReplies}
             >
               Show More Replies ({comment.replies_count - 1})
             </a>

@@ -14,23 +14,19 @@ class NewCommentForm extends React.Component {
     this.setState({ [name]: value });
   };
 
+  resetState = () => {
+    this.setState({
+      author: "",
+      body: "",
+    });
+  };
+
   handleOnSubmit = async (e) => {
     e.preventDefault();
     const newComment = { author: this.state.author, body: this.state.body };
-    try {
-      const response = await fetch("/api/comments", {
-        method: "POST",
-        body: JSON.stringify(newComment),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const comment = await response.json();
-      store.dispatch({ comment, type: "COMMENT_ADDED" });
-      this.setState({ author: "", body: "" });
-    } catch (error) {
-      console.error(error);
-    }
+    this.props.onSubmit(newComment, () => {
+      this.resetState();
+    });
   };
 
   render() {

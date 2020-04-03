@@ -349,5 +349,29 @@
     "postedAt": 1585942838621,
     "replies_count": 0,
     "replies": []
+  },
+  {
+    "author": "Srdjan",
+    "body": "Another",
+    "id": "fbb3d316-4aae-4e5c-ba85-1cefeaa1b402",
+    "postedAt": 1585944294787,
+    "replies_count": 0,
+    "replies": []
+  },
+  {
+    "author": "Srdjan",
+    "body": "",
+    "id": "b8bfcb2a-9fc0-42d4-a847-268f15f8ba69",
+    "postedAt": 1585944372160,
+    "replies_count": 0,
+    "replies": []
+  },
+  {
+    "author": "Srdjan",
+    "body": "Fixed reset",
+    "id": "8d57a61e-7c95-4604-a6ad-1c6812cdcd6c",
+    "postedAt": 1585944381077,
+    "replies_count": 0,
+    "replies": []
   }
 ]

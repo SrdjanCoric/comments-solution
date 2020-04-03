@@ -1,34 +1,18 @@
 import React from "react";
-import ParentComment from "./ParentComment";
-import store from "../lib/store";
+import ParentCommentContainer from "./ParentCommentContainer";
 
 class Comments extends React.Component {
-  async componentDidMount() {
-    this.unsubscribe = store.subscribe(() => this.forceUpdate());
-    try {
-      const response = await fetch("/api/comments");
-      const comments = await response.json();
-      store.dispatch({ comments, type: "COMMENTS_RECEIVED" });
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  componentWillUnmount() {
-    this.unsubscribe();
+  componentDidMount() {
+    this.props.onFetchComments();
   }
 
   render() {
-    let comments = store.getState().comments;
+    let comments = this.props.comments;
     return (
       <div className="comments">
         <h2>Comments ({comments.length})</h2>
         {comments.map((comment) => (
-          <ParentComment
-            key={comment.id}
-            comment={comment}
-            onShowMoreReplies={this.props.onShowMoreReplies}
-          />
+          <ParentCommentContainer key={comment.id} comment={comment} />
         ))}
       </div>
     );
