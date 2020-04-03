@@ -1,7 +1,7 @@
 import React from "react";
 import moment from "moment";
 
-const Comment = props => {
+const Comment = (props) => {
   return (
     <div className="comment">
       <hr />

@@ -1,27 +1,44 @@
 import React from "react";
 import Comment from "./Comment";
+import store from "../lib/store";
 
-const ParentComment = props => {
-  const replies = props.comment.replies.map(reply => (
-    <Comment key={reply.id} comment={reply} />
-  ));
-  const handleShowMoreReplies = e => {
+class ParentComment extends React.Component {
+  handleShowMoreReplies = async e => {
     e.preventDefault();
-    props.onShowMoreReplies(props.comment.id);
+    let id = this.props.comment.id;
+    try {
+      const response = await fetch(`/api/comment_replies?comment_id=${id}`);
+      const replies = await response.json();
+      store.dispatch({ replies, comment_id: id, type: "REPLIES_RECEIVED" });
+    } catch (error) {
+      console.error(error);
+    }
   };
-  return (
-    <div className="parent-comment">
-      <Comment comment={props.comment} />
-      <div className="replies">
-        {replies}
-        {props.comment.replies_count !== replies.length ? (
-          <a href="#" className="show_more" onClick={handleShowMoreReplies}>
-            Show More Replies ({props.comment.replies_count - 1})
-          </a>
-        ) : null}
+  render() {
+    const comment = this.props.comment;
+    const replies = store
+      .getState()
+      .replies.filter(r => r.comment_id === comment.id);
+    return (
+      <div className="parent-comment">
+        <Comment comment={comment} />
+        <div className="replies">
+          {replies.map(reply => (
+            <Comment key={reply.id} comment={reply} />
+          ))}
+          {comment.replies_count !== replies.length ? (
+            <a
+              href="#"
+              className="show_more"
+              onClick={this.handleShowMoreReplies}
+            >
+              Show More Replies ({comment.replies_count - 1})
+            </a>
+          ) : null}
+        </div>
       </div>
-    </div>
-  );
-};
+    );
+  }
+}
 
 export default ParentComment;

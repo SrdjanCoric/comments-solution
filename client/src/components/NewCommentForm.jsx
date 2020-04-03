@@ -1,23 +1,36 @@
 import React from "react";
+import store from "../lib/store";
 
 class NewCommentForm extends React.Component {
   state = {
     author: "",
-    body: ""
+    body: "",
   };
 
-  handleUserInput = e => {
+  handleUserInput = (e) => {
     e.preventDefault();
     const name = e.target.name;
     const value = e.target.value;
     this.setState({ [name]: value });
   };
 
-  handleOnSubmit = e => {
+  handleOnSubmit = async (e) => {
     e.preventDefault();
-    const comment = { author: this.state.author, body: this.state.body };
-    this.props.onSubmit(comment);
-    this.setState({ author: "", body: "" });
+    const newComment = { author: this.state.author, body: this.state.body };
+    try {
+      const response = await fetch("/api/comments", {
+        method: "POST",
+        body: JSON.stringify(newComment),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const comment = await response.json();
+      store.dispatch({ comment, type: "COMMENT_ADDED" });
+      this.setState({ author: "", body: "" });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   render() {
